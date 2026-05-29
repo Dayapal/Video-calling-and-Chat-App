@@ -1,0 +1,1 @@
+# A real-time Video Calling & Chat App built with React, Node.js, Express, MongoDB, Socket.IO, and WebRTC. Features secure authentication, instant messaging, online status tracking, and high-quality video calls with a modern, responsive user interface for seamless communication.
