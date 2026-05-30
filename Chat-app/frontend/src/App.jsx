@@ -13,6 +13,7 @@ import PageLoader from "./components/PageLoader.jsx";
 import { Toaster } from 'react-hot-toast'
 import { useQuery } from '@tanstack/react-query'
 import { axiosInstance } from './lib/axios'
+import Layout from './components/Layout.jsx'
 
 const App = () => {
 
@@ -48,19 +49,29 @@ const App = () => {
 
       <Routes>
 
-        <Route
-          path='/'
-          element={authUser ? <HomePage /> : <Navigate to="/login" />}
+         <Route
+          path="/"
+          element={
+            isAuthenticated && isOnboarded ? (
+              <Layout showSidebar={true}>
+                <HomePage />
+              </Layout>
+            ) : (
+              <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+            )
+          }
         />
 
         <Route
           path='/signup'
-          element={!authUser ? <SignUpPage /> : <Navigate to="/" />}
+          element={!authUser ? <SignUpPage /> : <Navigate to={isOnboarded ? "?" : "/onboarding"}/>}
         />
 
-        <Route
-          path='/login'
-          element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+       <Route
+          path="/login"
+          element={
+            !isAuthenticated ? <LoginPage /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} />
+          }
         />
 
         <Route
