@@ -7,6 +7,8 @@ import NotificationPage from './pages/NotificationPage'
 import CallPage from './pages/CallPage'
 import ChatPage from './pages/ChatPage'
 import OnboardingPage from './pages/OnboardingPage'
+import { useThemeStore } from "./store/useThemeStore.js";
+import PageLoader from "./components/PageLoader.jsx";
 
 import { Toaster } from 'react-hot-toast'
 import { useQuery } from '@tanstack/react-query'
@@ -24,6 +26,7 @@ const App = () => {
   });
 
   const authUser = authData?.user;
+   const { theme } = useThemeStore();
 
   if (isLoading) {
     return (
@@ -32,6 +35,13 @@ const App = () => {
       </div>
     );
   }
+  // const { isLoading, authUser } = useAuthUser();
+ 
+
+  const isAuthenticated = Boolean(authUser);
+  const isOnboarded = authUser?.isOnboarded;
+
+  if (isLoading) return <PageLoader />;
 
   return (
     <div className="h-screen" data-theme="dark">
@@ -69,8 +79,18 @@ const App = () => {
         />
 
         <Route
-          path='/onboarding'
-          element={authUser ? <OnboardingPage /> : <Navigate to="/login" />}
+          path="/onboarding"
+          element={
+            isAuthenticated ? (
+              !isOnboarded ? (
+                <OnboardingPage />
+              ) : (
+                <Navigate to="/" />
+              )
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
 
       </Routes>
